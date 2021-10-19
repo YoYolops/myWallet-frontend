@@ -1,9 +1,14 @@
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+
+import Auth from './components/Auth';
 
 function App() {
   return (
-    <div className="App">
-
-    </div>
+    <BrowserRouter>    
+      <Switch>
+        <Route exact path="/" component={Auth} />
+      </Switch>
+    </BrowserRouter>
   );
 }
 
