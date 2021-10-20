@@ -1,15 +1,14 @@
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 
-import Statement from './Statement';
+import BodyLayout from './BodyLayout';
 import Header from './Header';
 
 export default function Canva() {
     return (
         <CanvaContainer>
             <Header />
-            <Statement />
-
+            <BodyLayout />
         </CanvaContainer>
     )
 }

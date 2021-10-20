@@ -10,6 +10,7 @@ export default function Signup(props) {
 
     return (
         <SignupContainer
+            layout
             initial={{ x: -300, opacity: 1 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: 300, opacity: 1 }}

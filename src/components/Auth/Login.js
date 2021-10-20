@@ -7,7 +7,8 @@ export default function Login(props) {
     const [ password, setPassword ] = useState("");
 
     return (
-        <LoginContainer 
+        <LoginContainer
+            layout
             initial={{ x: 300, opacity: 1 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: -300, opacity: 1 }}

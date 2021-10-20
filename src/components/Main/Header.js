@@ -66,6 +66,7 @@ const HeaderContainer = styled(motion.header)`
     display: flex;
     color: #fff;
     width: 100%;
+    max-width: 1000px;
     font-size: 20px;
     font-weight: 700;
     margin-bottom: 25px;

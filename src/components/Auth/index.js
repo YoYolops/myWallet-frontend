@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AnimatePresence } from "framer-motion";
+import { AnimateSharedLayout } from "framer-motion";
 
 import Login from "./Login";
 import Signup from "./Signup";
@@ -12,10 +12,10 @@ export default function Auth() {
     }
 
     return (
-        <AnimatePresence>{
+        <AnimateSharedLayout>{
             toggleControl
                 ? <Login btText="First time? Sign up" toggle={toggleHandler} />
                 : <Signup btText="Already have an account? Log in" toggle={toggleHandler} />
-        }</AnimatePresence>
+        }</AnimateSharedLayout>
     )
 }
