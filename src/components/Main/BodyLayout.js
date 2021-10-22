@@ -16,8 +16,6 @@ export default function BodyLayout(props) {
     return (
         <BodyLayoutContainer>
             <FormContainer
-                whileHover={{ backgroundColor: "rgba(140, 37, 190, 0.9)" }}
-                whileFocus={{ backgroundColor: "rgba(140, 37, 190, 0.9)" }}
                 initial="unactive"
                 animate={buttonClicked ? "active" : "unactive"}
                 variants={FormVariants}
@@ -87,9 +85,9 @@ export default function BodyLayout(props) {
 
 const FormVariants = {
     active: {
-        height: "80vh",
+        height: "100vh",
         opacity: 1,
-        padding: "20px"
+        padding: "40px 30px"
     },
     unactive: {
         height: "0px",
@@ -120,9 +118,6 @@ const FormContainer = styled(motion.div)`
     position: fixed;
     bottom: 0;
     background-color: rgba(140, 37, 190);
-    background-color: rgba(140, 37, 190, 0.85);
-    border-radius: 20px 20px 0px 0px;
-    border-top: 3px solid #7700b2;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -130,16 +125,17 @@ const FormContainer = styled(motion.div)`
     
     p {
         color: #fff;
-        font-size: 20px;
+        font-size: 22px;
         font-weight: 700;
-        margin-bottom: 80px;
+        margin-bottom: 60px;
         height: 20px;
-        border-top: 4px solid #fff;
-        padding-top: 20px;
+        width: 100%;
+        text-align: left;
     }
 
     input {
-        width: 330px;
+        width: 100%;
+        max-width: 400px;
         height: 55px;
         border: none;
         outline: none;
@@ -153,17 +149,16 @@ const FormContainer = styled(motion.div)`
         border: none;
         outline: none;
         height: 46px;
-        width: 330px;
-        max-width: 350px;
+        width: 100%;
+        max-width: 400px;
         font-family: 'Raleway', sans-serif;
         border-radius: 5px;
-        background-color: #8C25BE;
+        background-color: #A328D6;
         font-size: 17px;
         color: #fff;
         font-weight: bolder;
         margin: 5px 0px;
         cursor: pointer;
-        border: 1px solid #fff;
     }
 
     .ico-container {
