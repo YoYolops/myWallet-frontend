@@ -1,4 +1,5 @@
-import styled from "styled-components"
+import styled from "styled-components";
+import { valueColorizer, parseValueToString } from "../../utils/utils";
 
 export default function Entry(props) {
     const {
@@ -6,29 +7,6 @@ export default function Entry(props) {
         description,
         value
     } = props.entry
-
-    function parseValueToString(priceInt) {
-        const stringedInt = priceInt.toString();
-        let centsSlice = ""; // two last numbers represent the cents
-        let intSlice = ""; // the other numbers represents the interger part of the value
-    
-        for(let i = 0; i < stringedInt.length; i++) {
-            if(i >= stringedInt.length - 2) {
-                centsSlice += stringedInt[i]
-            } else {
-                intSlice += stringedInt[i]
-            }
-        }
-    
-        return intSlice + "," + centsSlice;
-    }
-
-    function valueColorizer() {
-        if(value < 0) {
-            return 'red'
-        }
-        return "green"
-    }
 
     function formatDate(date) {
         const splitted = date.split("-");
@@ -40,7 +18,7 @@ export default function Entry(props) {
         <EntryContainer>
             <Date>{formatDate(date)}</Date>
             <Description>{description}</Description>
-            <Value colorize={valueColorizer()}>{parseValueToString(value)}</Value>
+            <Value colorize={valueColorizer(value)}>{parseValueToString(value)}</Value>
         </EntryContainer>
     )
 }
@@ -62,7 +40,7 @@ const Date = styled.p`
 const Description = styled.p`
     color: black;
     padding: 0px 2px;
-    width: 230px;
+    width: 65%;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;

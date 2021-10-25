@@ -9,6 +9,7 @@ import AppContext from '../context/AppContext';
 import Spinner from '../Spinner';
 import Entry from './Entry';
 import { registerEntry } from '../../services/entries';
+import Balance from './Balance';
 
 
 export default function BodyLayout(props) {
@@ -39,6 +40,11 @@ export default function BodyLayout(props) {
     }, [userData, setEntries, rerender])
 
     async function submitEntry(type) {
+        if(value === "" || description.trim() === "") {
+            alert("Insira valores válidos")
+            return;
+        }
+
         if(type) {
             const body = {
                 value: value*100,
@@ -108,6 +114,7 @@ export default function BodyLayout(props) {
                 animate={isClicked ? "clicked" : "notClicked"}
                 variants={variants}
                 entries={entries}
+                positioning={buttonClicked ? 'unset' : "relative"}
             >{
                 isLoading
                     ? <Spinner />
@@ -116,30 +123,32 @@ export default function BodyLayout(props) {
                         : entries.map(entry => {
                             return <Entry key={entry.id} entry={entry} />
                         })
-            }</StatementContainer>
+            }
+                <Balance entries={entries} buttonClicked={buttonClicked} />
+            </StatementContainer>
 
             <StatementButtonContainer
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
             >
-            <Button
-                onClick={() => {
-                    setButtonClicked(prevState => !prevState)
-                    setButtonSelected(1)
-                }}
-            >
-                <FiPlusCircle size={20} color="#fff"/>
-                <p>New Credit</p>
-            </Button>
-            <Button
-                onClick={() => {
-                    setButtonClicked(prevState => !prevState)
-                    setButtonSelected(0)
-                }}
-            >
-                <FiMinusCircle size={20} color="#fff"/>
-                <p>New Debit</p>
-            </Button>
+                <Button
+                    onClick={() => {
+                        setButtonClicked(prevState => !prevState)
+                        setButtonSelected(1)
+                    }}
+                >
+                    <FiPlusCircle size={20} color="#fff"/>
+                    <p>New Credit</p>
+                </Button>
+                <Button
+                    onClick={() => {
+                        setButtonClicked(prevState => !prevState)
+                        setButtonSelected(0)
+                    }}
+                >
+                    <FiMinusCircle size={20} color="#fff"/>
+                    <p>New Debit</p>
+                </Button>
             </StatementButtonContainer>
         </BodyLayoutContainer>
     )
@@ -230,7 +239,7 @@ const FormContainer = styled(motion.div)`
         height: 40px;
         border-radius: 20px;
         background-color: #7700b2;
-        bottom: 40px;
+        bottom: 60px;
         left: 40px;
         cursor: pointer;
     }
@@ -255,6 +264,7 @@ const StatementContainer = styled(motion.div)`
     flex-direction: column;
     justify-content: ${props => props.entries.length ? 'flex-start' : 'center'};
     align-items: center;
+    position: ${props => props.positioning};
 
     .warning {
         color: #868686;
