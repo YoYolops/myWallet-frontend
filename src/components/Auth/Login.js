@@ -5,16 +5,20 @@ import { useHistory } from "react-router-dom";
 
 import { login } from '../../services/auth'
 import AppContext from '../context/AppContext';
+import Spinner from '../Spinner';
 
 export default function Login(props) {
     const history = useHistory();
     const { setUserData, storeUserDataLocally } = useContext(AppContext);
+    const [ isLoading, setIsLoading ] = useState(false);
 
     const [ email, setEmail ] = useState("");
     const [ password, setPassword ] = useState("");
 
     async function signIn() {
+        setIsLoading(true);
         const response = await login(email, password);
+        if(!response) alert("Wrong email or password")
         if(response) {
             storeUserDataLocally(response);
             setUserData(response);
@@ -22,6 +26,7 @@ export default function Login(props) {
             return;
         }
         setPassword("");
+        setIsLoading(false)
     }
 
     return (
@@ -40,20 +45,24 @@ export default function Login(props) {
         >
             <Title>MyWallet</Title>
             <input 
-                type="text"
+                type="email"
                 placeholder="E-mail"
                 onChange={ e => setEmail(e.target.value) }
+                disabled={isLoading}
                 value={email}
             />
             <input 
                 type="password"
                 placeholder="Password"
                 onChange={ e => setPassword(e.target.value) }
+                disabled={isLoading}
                 value={password}
             />
-            <button className="signer" onClick={signIn}>
-                Sign in
-            </button>
+            <button className="signer" onClick={signIn}>{
+                isLoading
+                    ? <Spinner color="#fff"/>
+                    : "Sign in"
+            }</button>
 
             <button className="toggler" onClick={props.toggle}>
                 {props.btText}
@@ -68,7 +77,8 @@ const LoginContainer = styled(motion.div)`
     align-items: center;
     justify-content: center;
     padding: 20px;
-    min-height: 100vh;
+    height: 100vh;
+    overflow: hidden;
 
     input {
         height: 58px;

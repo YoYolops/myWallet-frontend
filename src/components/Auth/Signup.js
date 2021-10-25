@@ -2,14 +2,17 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { register } from '../../services/auth';
+import Spinner from '../Spinner';
 
 export default function Signup(props) {
     const [ name, setname ] = useState("");
     const [ email, setEmail ] = useState("");
     const [ password, setPassword ] = useState("");
     const [ passwordConfirmation, setPasswordConfirmation ] = useState("");
+    const [ isLoading, setIsLoading ] = useState(false);
 
     async function signUp() {
+        setIsLoading(true)
         if(password !== passwordConfirmation) {
             alert("Password is not equal to password confirmation")
             setPassword("")
@@ -20,7 +23,7 @@ export default function Signup(props) {
             props.toggle()
             return;
         }
-        console.log("Não pude registrar")
+        setIsLoading(false)
     }
 
     return (
@@ -62,9 +65,11 @@ export default function Signup(props) {
                 onChange={ e => setPasswordConfirmation(e.target.value) }
                 value={passwordConfirmation}
             />
-            <button className="signer" onClick={signUp}>
-                Sign up
-            </button>
+            <button className="signer" onClick={signUp}>{
+                isLoading
+                    ? <Spinner color="#fff"/>
+                    : "Sign up"
+            }</button>
 
             <button className="toggler" onClick={props.toggle}>
                 {props.btText}
@@ -79,7 +84,8 @@ const SignupContainer = styled(motion.div)`
     align-items: center;
     justify-content: center;
     padding: 20px;
-    min-height: 100vh;
+    height: 100vh;
+    overflow: hidden;
 
     input {
         height: 58px;

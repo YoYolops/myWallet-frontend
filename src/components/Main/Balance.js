@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import styled from "styled-components"
 import { valueColorizer, parseValueToString } from "../../utils/utils";
 
-export default function Balance({ entries, buttonClicked }) {
+export default function Balance({ entries, entriesLength }) {
     const [ value, setValue ] = useState(0);
 
     useEffect(() => {
@@ -14,7 +14,7 @@ export default function Balance({ entries, buttonClicked }) {
     }, [setValue, entries])
 
     return (
-        <BalanceContainer color>
+        <BalanceContainer shouldRender={entriesLength}>
             <p>SALDO</p>
             <Value colorize={valueColorizer(value)} >{parseValueToString(value)}</Value>
         </BalanceContainer>
@@ -22,11 +22,11 @@ export default function Balance({ entries, buttonClicked }) {
 }
 
 const BalanceContainer = styled.div`
-    display: flex;
+    display: ${props => props.shouldRender ? "flex" : 'none'};
     justify-content: space-between;
     width: 100%;
     margin-bottom: 15px;
-    padding-bottom: 7px;
+    padding: 7px 0px 7px 0px;
     border-bottom: 2px solid #8C11BE;
 
     p {

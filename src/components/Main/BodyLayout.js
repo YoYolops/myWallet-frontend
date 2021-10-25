@@ -116,7 +116,7 @@ export default function BodyLayout(props) {
                 entries={entries}
                 positioning={buttonClicked ? 'unset' : "relative"}
             >
-                <Balance entries={entries} buttonClicked={buttonClicked} />
+                <Balance entries={entries} entriesLength={entries.length} />
             {
                 isLoading
                     ? <Spinner />
