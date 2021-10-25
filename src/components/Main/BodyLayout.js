@@ -115,7 +115,9 @@ export default function BodyLayout(props) {
                 variants={variants}
                 entries={entries}
                 positioning={buttonClicked ? 'unset' : "relative"}
-            >{
+            >
+                <Balance entries={entries} buttonClicked={buttonClicked} />
+            {
                 isLoading
                     ? <Spinner />
                     : !entries.length
@@ -124,7 +126,6 @@ export default function BodyLayout(props) {
                             return <Entry key={entry.id} entry={entry} />
                         })
             }
-                <Balance entries={entries} buttonClicked={buttonClicked} />
             </StatementContainer>
 
             <StatementButtonContainer
@@ -258,7 +259,7 @@ const StatementContainer = styled(motion.div)`
     height: 400px;
     width: 100%;
     border-radius: 5px;
-    padding: 30px 10px 10px 10px;
+    padding: 10px 10px 10px 10px;
     cursor: pointer;
     display: flex;
     flex-direction: column;

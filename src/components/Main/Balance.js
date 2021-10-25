@@ -14,34 +14,28 @@ export default function Balance({ entries, buttonClicked }) {
     }, [setValue, entries])
 
     return (
-        <BalanceContainer textColor={buttonClicked ? "#fff" : "black"}>
+        <BalanceContainer color>
             <p>SALDO</p>
-            <Value colorize={valueColorizer(value)} buttonClicked={buttonClicked}>
-                {parseValueToString(value)}
-            </Value>
+            <Value colorize={valueColorizer(value)} >{parseValueToString(value)}</Value>
         </BalanceContainer>
     )
 }
 
 const BalanceContainer = styled.div`
     display: flex;
-    position: absolute;
-    bottom: 0;
     justify-content: space-between;
     width: 100%;
-    padding: 10px 15px;
-    font-weight: bolder;
+    margin-bottom: 15px;
+    padding-bottom: 7px;
+    border-bottom: 2px solid #8C11BE;
 
     p {
-        color: ${props => props.textColor};
+        color: black;
         font-weight: bolder;
     }
 `
 
 const Value = styled.div`
-    color: ${ props => (
-        props.buttonClicked
-            ? "#fff"
-            : props.colorize === 'red' ? "#C71900" : "#03AC04")};
+    color: ${ props => props.colorize === 'red' ? "#C71900" : "#03AC04"};
     padding: 0px 2px;
 `
