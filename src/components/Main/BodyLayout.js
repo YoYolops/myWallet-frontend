@@ -55,7 +55,6 @@ export default function BodyLayout() {
                 value: value*100,
                 description
             }
-            console.log(body)
             registerEntry(userData.token, body)
                 .then(() => { setIsLoading(false) })
                 .catch(() => {
@@ -68,7 +67,6 @@ export default function BodyLayout() {
                 description
             }
 
-            console.log(body)
             registerEntry(userData.token, body)
                 .then(() => { setIsLoading(false) })
                 .catch(() => {

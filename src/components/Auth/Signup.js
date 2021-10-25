@@ -25,6 +25,8 @@ export default function Signup(props) {
             alert("Password is not equal to password confirmation")
             setPassword("")
             setPasswordConfirmation("")
+            setIsLoading(false)
+            return;
         }
         const isRegistered = await register(name, email, password);
         if(!isRegistered) {

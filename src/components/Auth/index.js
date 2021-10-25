@@ -12,7 +12,6 @@ export default function Auth() {
     const [ toggleControl, setToggleControl ] = useState(false);
 
     useLayoutEffect(() => {
-        console.log(userData)
         if(userData) history.push("/main")
     }, [history, userData])
 
