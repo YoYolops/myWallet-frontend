@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import AUTH from '../../services/auth';
+import { register } from '../../services/auth';
 
 export default function Signup(props) {
     const [ name, setname ] = useState("");
@@ -15,7 +15,7 @@ export default function Signup(props) {
             setPassword("")
             setPasswordConfirmation("")
         }
-        const isRegistered = await AUTH.register(name, email, password);
+        const isRegistered = await register(name, email, password);
         if(isRegistered) {
             props.toggle()
             return;

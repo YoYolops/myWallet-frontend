@@ -1,17 +1,65 @@
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import styled from "styled-components";
 import { motion } from 'framer-motion';
 import { FiPlusCircle, FiMinusCircle } from 'react-icons/fi';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 
+import { getEntries } from '../../services/entries';
+import AppContext from '../context/AppContext';
+import Spinner from '../Spinner';
+import Entry from './Entry';
+import { registerEntry } from '../../services/entries';
+
 
 export default function BodyLayout(props) {
+    const { userData, setEntries, entries } = useContext(AppContext)
     const [ isClicked, setIsClicked ] = useState(false);
     const [ buttonClicked, setButtonClicked ] = useState(false);
-    const [ buttonSelected, setButtonSelected ] = useState();
+    const [ isLoading, setIsLoading ] = useState(true);
+    const [ buttonSelected, setButtonSelected ] = useState(false);
+    const [ rerender, setRerender ] = useState(false);
 
-    const [ value, setValue ] = useState();
+    const [ value, setValue ] = useState("");
     const [ description, setDescription ] = useState("");
+
+    useEffect(() => {
+        let unmounted = false;
+
+        if(userData) {
+            if(!unmounted) setIsLoading(true);
+            getEntries(userData.token)
+                .then(resp => {
+                    if(!unmounted) {
+                        setEntries(resp)
+                        setIsLoading(false)
+                    }
+                })
+        }
+        return () => unmounted = true;
+    }, [userData, setEntries, rerender])
+
+    async function submitEntry(type) {
+        if(type) {
+            const body = {
+                value: value*100,
+                description
+            }
+            console.log(body)
+            await registerEntry(userData.token, body)
+        } else {
+            const body = {
+                value: ((100*value)*-1),
+                description
+            }
+
+            console.log(body)
+            await registerEntry(userData.token, body)
+        }
+        setRerender(prevState => !prevState)
+        setValue("")
+        setDescription("")
+        setButtonClicked(false)
+    }
 
     return (
         <BodyLayoutContainer>
@@ -22,10 +70,14 @@ export default function BodyLayout(props) {
             >
                 <p>{buttonSelected ? "New Credit" : "New Debit"}</p>
                 <input 
-                    type="text"
+                    type="number"
+                    min="1"
+                    step="any"
                     placeholder="Value"
                     value={value}
-                    onChange={e => setValue(e.target.value)}
+                    onChange={e => {
+                        setValue(Number(e.target.value))
+                    }}
                 />
                 <input 
                     type="text"
@@ -33,7 +85,9 @@ export default function BodyLayout(props) {
                     value={description}
                     onChange={e => setDescription(e.target.value)}
                 />
-                <button>Save</button>
+                <button
+                    onClick={() => {submitEntry(buttonSelected)}}
+                >Save</button>
 
                 <div className="ico-container" onClick={() => {
                     setButtonClicked(false)
@@ -41,6 +95,7 @@ export default function BodyLayout(props) {
                     <MdKeyboardArrowDown size={40} color="#fff"/>
                 </div>
             </FormContainer>
+
             <StatementContainer
                 onClick={() => {
                     if(!buttonClicked) {
@@ -52,9 +107,16 @@ export default function BodyLayout(props) {
                 }}
                 animate={isClicked ? "clicked" : "notClicked"}
                 variants={variants}
-            >
-
-            </StatementContainer>
+                entries={entries}
+            >{
+                isLoading
+                    ? <Spinner />
+                    : !entries.length
+                        ? <p className="warning">There is no entries registered yet, register some to get started</p>
+                        : entries.map(entry => {
+                            return <Entry key={entry.id} entry={entry} />
+                        })
+            }</StatementContainer>
 
             <StatementButtonContainer
                 initial={{ opacity: 0 }}
@@ -187,8 +249,18 @@ const StatementContainer = styled(motion.div)`
     height: 400px;
     width: 100%;
     border-radius: 5px;
-    padding: 20px 10px 10px 10px;
+    padding: 30px 10px 10px 10px;
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: ${props => props.entries.length ? 'flex-start' : 'center'};
+    align-items: center;
+
+    .warning {
+        color: #868686;
+        font-size: 20px;
+        text-align: center;
+    }
 `
 
 const StatementButtonContainer = styled.div`

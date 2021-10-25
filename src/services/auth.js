@@ -41,10 +41,8 @@ async function logout(token) {
     }
 }
 
-const AUTH = {
+export {
     login,
     register,
     logout
 }
-
-export default AUTH;

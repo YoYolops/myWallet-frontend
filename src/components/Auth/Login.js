@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { useHistory } from "react-router-dom";
 
-import AUTH from '../../services/auth'
+import { login } from '../../services/auth'
 import AppContext from '../context/AppContext';
 
 export default function Login(props) {
@@ -14,10 +14,10 @@ export default function Login(props) {
     const [ password, setPassword ] = useState("");
 
     async function signIn() {
-        const response = await AUTH.login(email, password);
+        const response = await login(email, password);
         if(response) {
-            setUserData(response);
             storeUserDataLocally(response);
+            setUserData(response);
             history.push("/main");
             return;
         }
