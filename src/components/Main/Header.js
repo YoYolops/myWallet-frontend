@@ -1,15 +1,25 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { motion, AnimateSharedLayout } from "framer-motion";
 import styled from "styled-components";
-
 import { BiExit } from 'react-icons/bi';
 import { IoIosCloseCircleOutline } from 'react-icons/io';
 
+import AUTH from '../../services/auth';
+import AppContext from "../context/AppContext";
+import { useHistory } from "react-router";
+
 export default function Header() {
+    const history = useHistory();
     const [ showExitBanner, setShowExitBanner ] = useState(false);
+    const { userData } = useContext(AppContext);
 
     function toggleExitBanner() {
         setShowExitBanner(prevState => !prevState)
+    }
+
+    async function signOut() {
+        response = await AUTH.logout(userData.token);
+        if(response) history.push("/")
     }
 
     return (
@@ -26,6 +36,7 @@ export default function Header() {
                         >
                             <motion.button
                                 whileTap={{ scale: .95 }}
+                                onClick={signOut}
                             >
                                 Exit
                             </motion.button>

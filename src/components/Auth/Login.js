@@ -1,10 +1,28 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
+import { useHistory } from "react-router-dom";
+
+import AUTH from '../../services/auth'
+import AppContext from '../context/AppContext';
 
 export default function Login(props) {
+    const history = useHistory();
+    const { setUserData, storeUserDataLocally } = useContext(AppContext);
+
     const [ email, setEmail ] = useState("");
     const [ password, setPassword ] = useState("");
+
+    async function signIn() {
+        const response = await AUTH.login(email, password);
+        if(response) {
+            setUserData(response);
+            storeUserDataLocally(response);
+            history.push("/main");
+            return;
+        }
+        setPassword("");
+    }
 
     return (
         <LoginContainer
@@ -28,12 +46,12 @@ export default function Login(props) {
                 value={email}
             />
             <input 
-                type="text"
+                type="password"
                 placeholder="Password"
                 onChange={ e => setPassword(e.target.value) }
                 value={password}
             />
-            <button className="signer">
+            <button className="signer" onClick={signIn}>
                 Sign in
             </button>
 

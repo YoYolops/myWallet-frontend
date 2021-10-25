@@ -1,10 +1,20 @@
+import { useLayoutEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import AppContext from '../context/AppContext';
+import { useHistory } from 'react-router';
 
 import BodyLayout from './BodyLayout';
 import Header from './Header';
 
 export default function Canva() {
+    const history = useHistory();
+    const { userData } = useContext(AppContext);
+
+    useLayoutEffect(() => {
+        if(!userData) history.push("/")
+    }, [history, userData])
+
     return (
         <CanvaContainer>
             <Header />

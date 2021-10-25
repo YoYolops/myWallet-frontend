@@ -1,12 +1,27 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
+import AUTH from '../../services/auth';
 
 export default function Signup(props) {
-    const [ nome,setNome ] = useState("");
+    const [ name, setname ] = useState("");
     const [ email, setEmail ] = useState("");
     const [ password, setPassword ] = useState("");
     const [ passwordConfirmation, setPasswordConfirmation ] = useState("");
+
+    async function signUp() {
+        if(password !== passwordConfirmation) {
+            alert("Password is not equal to password confirmation")
+            setPassword("")
+            setPasswordConfirmation("")
+        }
+        const isRegistered = await AUTH.register(name, email, password);
+        if(isRegistered) {
+            props.toggle()
+            return;
+        }
+        console.log("Não pude registrar")
+    }
 
     return (
         <SignupContainer
@@ -25,9 +40,9 @@ export default function Signup(props) {
             <Title>MyWallet</Title>
             <input 
                 type="text"
-                placeholder="Nome"
-                onChange={ e => setNome(e.target.value) }
-                value={nome}
+                placeholder="Name"
+                onChange={ e => setname(e.target.value) }
+                value={name}
             />
             <input 
                 type="text"
@@ -36,18 +51,18 @@ export default function Signup(props) {
                 value={email}
             />
             <input 
-                type="text"
+                type="password"
                 placeholder="Password"
                 onChange={ e => setPassword(e.target.value) }
                 value={password}
             />
             <input 
-                type="text"
-                placeholder="Password"
+                type="password"
+                placeholder="Confirm password"
                 onChange={ e => setPasswordConfirmation(e.target.value) }
                 value={passwordConfirmation}
             />
-            <button className="signer">
+            <button className="signer" onClick={signUp}>
                 Sign up
             </button>
 
