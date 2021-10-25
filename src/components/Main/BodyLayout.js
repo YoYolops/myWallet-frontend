@@ -12,7 +12,7 @@ import { registerEntry } from '../../services/entries';
 import Balance from './Balance';
 
 
-export default function BodyLayout(props) {
+export default function BodyLayout() {
     const { userData, setEntries, entries } = useContext(AppContext)
     const [ isClicked, setIsClicked ] = useState(false);
     const [ buttonClicked, setButtonClicked ] = useState(false);
@@ -25,9 +25,9 @@ export default function BodyLayout(props) {
 
     useEffect(() => {
         let unmounted = false;
-
+        
+        if(!unmounted) setIsLoading(true);
         if(userData) {
-            if(!unmounted) setIsLoading(true);
             getEntries(userData.token)
                 .then(resp => {
                     if(!unmounted) {
@@ -35,13 +35,18 @@ export default function BodyLayout(props) {
                         setIsLoading(false)
                     }
                 })
+                .catch(() => {
+                    setIsLoading(false)
+                })
         }
         return () => unmounted = true;
     }, [userData, setEntries, rerender])
 
     async function submitEntry(type) {
+        setIsLoading(true)
         if(value === "" || description.trim() === "") {
             alert("Insira valores válidos")
+            setIsLoading(false);
             return;
         }
 
@@ -51,7 +56,12 @@ export default function BodyLayout(props) {
                 description
             }
             console.log(body)
-            await registerEntry(userData.token, body)
+            registerEntry(userData.token, body)
+                .then(() => { setIsLoading(false) })
+                .catch(() => {
+                    alert("Our servers lost track of your requisitions, try again later")
+                    setIsLoading(false)
+                })
         } else {
             const body = {
                 value: ((100*value)*-1),
@@ -59,7 +69,12 @@ export default function BodyLayout(props) {
             }
 
             console.log(body)
-            await registerEntry(userData.token, body)
+            registerEntry(userData.token, body)
+                .then(() => { setIsLoading(false) })
+                .catch(() => {
+                    alert("Our servers lost track of your requisitions, try again later")
+                    setIsLoading(false)
+                })
         }
         setRerender(prevState => !prevState)
         setValue("")
@@ -76,6 +91,7 @@ export default function BodyLayout(props) {
             >
                 <p>{buttonSelected ? "New Credit" : "New Debit"}</p>
                 <input 
+                    disabled={isLoading}
                     type="number"
                     min="1"
                     step="any"
@@ -85,18 +101,22 @@ export default function BodyLayout(props) {
                         setValue(Number(e.target.value))
                     }}
                 />
-                <input 
+                <input
+                    disabled={isLoading} 
                     type="text"
                     placeholder="Description"
                     value={description}
                     onChange={e => setDescription(e.target.value)}
                 />
                 <button
-                    onClick={() => {submitEntry(buttonSelected)}}
-                >Save</button>
+                    onClick={() => {submitEntry(buttonSelected)}}>
+                        Save
+                </button>
 
                 <div className="ico-container" onClick={() => {
                     setButtonClicked(false)
+                    setDescription("")
+                    setValue("")
                 }}>
                     <MdKeyboardArrowDown size={40} color="#fff"/>
                 </div>

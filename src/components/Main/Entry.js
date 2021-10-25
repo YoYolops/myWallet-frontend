@@ -18,7 +18,9 @@ export default function Entry(props) {
         <EntryContainer>
             <Date>{formatDate(date)}</Date>
             <Description>{description}</Description>
-            <Value colorize={valueColorizer(value)}>{parseValueToString(value)}</Value>
+            <Value colorize={valueColorizer(value)}>
+                {parseValueToString(value)}
+            </Value>
         </EntryContainer>
     )
 }

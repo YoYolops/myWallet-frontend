@@ -13,12 +13,26 @@ export default function Signup(props) {
 
     async function signUp() {
         setIsLoading(true)
+        if( name.trim() === "" ||
+            email.trim() === "" ||
+            password.trim() === "")
+        {
+            alert("Please, fill in all the fields")
+            setIsLoading(false)
+            return;
+        }
         if(password !== passwordConfirmation) {
             alert("Password is not equal to password confirmation")
             setPassword("")
             setPasswordConfirmation("")
         }
         const isRegistered = await register(name, email, password);
+        if(!isRegistered) {
+            alert("That isn't working, please insert valid data")
+            setIsLoading(false)
+            return;
+        }
+
         if(isRegistered) {
             props.toggle()
             return;
@@ -48,7 +62,7 @@ export default function Signup(props) {
                 value={name}
             />
             <input 
-                type="text"
+                type="email"
                 placeholder="E-mail"
                 onChange={ e => setEmail(e.target.value) }
                 value={email}

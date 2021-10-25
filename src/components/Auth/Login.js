@@ -18,7 +18,11 @@ export default function Login(props) {
     async function signIn() {
         setIsLoading(true);
         const response = await login(email, password);
-        if(!response) alert("Wrong email or password")
+        if(!response) {
+            alert("Wrong email or password");
+            setIsLoading(false);
+            return;
+        }
         if(response) {
             storeUserDataLocally(response);
             setUserData(response);
