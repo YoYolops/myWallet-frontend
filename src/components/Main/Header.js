@@ -48,7 +48,7 @@ export default function Header() {
                             exit={"exit"}
                             key={false}
                         >
-                            <p>Hi, Fulano</p>
+                            <p>{`Hi, ${userData.name}`}</p>
                             <BiExit size={25} color="#fff"onClick={toggleExitBanner}/>
                         </Head>)
             }</AnimateSharedLayout>
