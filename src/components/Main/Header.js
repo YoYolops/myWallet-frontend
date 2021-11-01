@@ -3,6 +3,7 @@ import { motion, AnimateSharedLayout } from "framer-motion";
 import styled from "styled-components";
 import { BiExit } from 'react-icons/bi';
 import { IoIosCloseCircleOutline } from 'react-icons/io';
+import Spinner from "../Spinner";
 
 import { logout } from '../../services/auth';
 import AppContext from "../context/AppContext";
@@ -48,7 +49,12 @@ export default function Header() {
                             exit={"exit"}
                             key={false}
                         >
-                            <p>{`Hi, ${userData.name}`}</p>
+                            {
+                                userData
+                                    ? <p>{`Hi, ${userData?.name}`}</p>
+                                    : <Spinner color="#fff"/>
+                            }
+                            
                             <BiExit size={25} color="#fff"onClick={toggleExitBanner}/>
                         </Head>)
             }</AnimateSharedLayout>
