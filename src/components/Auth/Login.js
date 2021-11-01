@@ -17,6 +17,11 @@ export default function Login(props) {
 
     async function signIn() {
         setIsLoading(true);
+        if(email.trim() === "" || password.trim() === "") {
+            alert("Please, fill in all the fields");
+            setIsLoading(false);
+            return;
+        }
         const response = await login(email, password);
         if(!response) {
             alert("Wrong email or password");

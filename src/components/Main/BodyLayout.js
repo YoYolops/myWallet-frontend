@@ -50,34 +50,23 @@ export default function BodyLayout() {
             return;
         }
 
-        if(type) {
-            const body = {
-                value: value*100,
-                description
-            }
-            registerEntry(userData.token, body)
-                .then(() => { setIsLoading(false) })
-                .catch(() => {
-                    alert("Our servers lost track of your requisitions, try again later")
-                    setIsLoading(false)
-                })
-        } else {
-            const body = {
-                value: ((100*value)*-1),
-                description
-            }
-
-            registerEntry(userData.token, body)
-                .then(() => { setIsLoading(false) })
-                .catch(() => {
-                    alert("Our servers lost track of your requisitions, try again later")
-                    setIsLoading(false)
-                })
+        let body;
+        if(type) body = {
+            value: value*100,
+            description
         }
-        setRerender(prevState => !prevState)
+        else body = {
+            value: ((100*value)*-1),
+            description
+        }
         setValue("")
         setDescription("")
         setButtonClicked(false)
+
+        const resp = await registerEntry(userData.token, body)
+        if(!resp) alert("Our servers lost track of your requisitions, try again later")
+        setRerender(prevState => !prevState)
+        setIsLoading(false)
     }
 
     return (
