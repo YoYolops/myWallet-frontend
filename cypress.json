@@ -1,0 +1,4 @@
+{
+    "videosFolder": "./cypress/videos",
+    "videoCompression": 10
+}

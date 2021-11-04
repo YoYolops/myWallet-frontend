@@ -10,6 +10,7 @@ import Spinner from '../Spinner';
 import Entry from './Entry';
 import { registerEntry } from '../../services/entries';
 import Balance from './Balance';
+import { resetApp } from '../../utils/utils';
 
 
 export default function BodyLayout() {
@@ -36,11 +37,12 @@ export default function BodyLayout() {
                     }
                 })
                 .catch(() => {
-                    setIsLoading(false)
+                    alert("Você parece já estar logado em outro dispositivo...")
+                    resetApp();
                 })
         }
         return () => unmounted = true;
-    }, [userData, setEntries, rerender])
+    }, [userData, setEntries, rerender ])
 
     async function submitEntry(type) {
         setIsLoading(true)

@@ -4,21 +4,21 @@ import styled from "styled-components";
 import { BiExit } from 'react-icons/bi';
 import { IoIosCloseCircleOutline } from 'react-icons/io';
 import Spinner from "../Spinner";
-
+import { resetApp } from "../../utils/utils";
 import { logout } from '../../services/auth';
 import AppContext from "../context/AppContext";
 
 export default function Header() {
     const [ showExitBanner, setShowExitBanner ] = useState(false);
-    const { userData, resetApp } = useContext(AppContext);
+    const { userData } = useContext(AppContext);
 
     function toggleExitBanner() {
         setShowExitBanner(prevState => !prevState)
     }
 
    function signOut() {
-        logout(userData.token);
-        resetApp();
+       logout(userData.token);
+       resetApp();
     }
 
     return (

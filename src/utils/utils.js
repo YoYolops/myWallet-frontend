@@ -21,8 +21,14 @@ function valueColorizer(value) {
     return "green"
 }
 
+function resetApp() {
+    localStorage.removeItem("mywallet")
+    window.location.href = "/"
+}
+
 
 export {
     parseValueToString,
-    valueColorizer
+    valueColorizer,
+    resetApp
 }

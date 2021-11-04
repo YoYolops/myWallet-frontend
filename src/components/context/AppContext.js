@@ -21,18 +21,11 @@ export function AppProvider({ children }) {
         localStorage.setItem("mywallet", JSON.stringify(data))
     }
 
-    function resetApp() {
-        localStorage.removeItem("mywallet")
-        setUserData()
-        window.location.href = "/"
-    }
-
     return (
         <AppContext.Provider value={{
             userData,
             setUserData,
             storeUserDataLocally,
-            resetApp,
             entries,
             setEntries
         }}>
