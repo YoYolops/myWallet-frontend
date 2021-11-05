@@ -15,7 +15,7 @@ export default function Balance({ entries, entriesLength }) {
 
     return (
         <BalanceContainer shouldRender={entriesLength}>
-            <p>SALDO</p>
+            <p>BALANCE:</p>
             <Value colorize={valueColorizer(value)} >{parseValueToString(value)}</Value>
         </BalanceContainer>
     )
